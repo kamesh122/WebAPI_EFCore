@@ -9,14 +9,22 @@ namespace Web.API.Controllers
     public class EmployeeController : ControllerBase
     {
         public IEmployeeService employeeService;
-        public EmployeeController(IEmployeeService _employeeService)
+        private readonly IConfiguration _configuration;
+        public EmployeeController(IEmployeeService _employeeService, IConfiguration configuration)
         {
             employeeService = _employeeService;
+            _configuration = configuration;
         }
 
         [HttpGet]
         public IActionResult Employees()
         {
+            List<string> result = new List<string>()
+            {
+                _configuration["connectionstring"],
+                _configuration["rediscache"]
+            };
+
             var Emp = employeeService.GetEmployees();
             return Ok(Emp);
         }
