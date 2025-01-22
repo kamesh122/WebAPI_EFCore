@@ -3,6 +3,7 @@ using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebAPI.Business;
 using WebAPI.Business.Interfaces;
 using WebAPI.Data.Context;
@@ -35,6 +36,12 @@ builder.Services.AddDbContext<DatabaseContext>
     }
 
     );
+var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "__logs", $"log_{DateTime.Now}.txt");
+Log.Logger = new LoggerConfiguration()
+           .WriteTo.Console()
+           .WriteTo.File(path, rollingInterval: RollingInterval.Day)
+           .CreateLogger();
+
 
 // Add services to the container.
 

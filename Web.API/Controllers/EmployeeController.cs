@@ -10,15 +10,21 @@ namespace Web.API.Controllers
     {
         public IEmployeeService employeeService;
         private readonly IConfiguration _configuration;
-        public EmployeeController(IEmployeeService _employeeService, IConfiguration configuration)
+        private readonly ILogger<EmployeeController> _logger;
+        public EmployeeController(IEmployeeService _employeeService, IConfiguration configuration, ILogger<EmployeeController> logger)
         {
             employeeService = _employeeService;
             _configuration = configuration;
+            _logger = logger;   
         }
 
         [HttpGet]
         public IActionResult Employees()
         {
+             
+                _logger.LogInformation("Starting application...");                
+            
+
             List<string> result = new List<string>()
             {
                 _configuration["connectionstring"],
